@@ -1,0 +1,35 @@
+@import '@styles/colors';
+
+.iconColorBlue {
+    path {
+        fill: $blue-accent;
+    }
+}
+.iconColorGreen {
+    path {
+        fill: $green-accent;
+    }
+}
+.iconColorOrange {
+    path {
+        fill: $orange-accent;
+    }
+}
+.iconColorRed {
+    path {
+        fill: $red-accent;
+    }
+}
+.iconColorGray {
+    path {
+        fill: $neutral-gray-text;
+    }
+}
+.iconColorTransparent {
+    path {
+        fill: transparent;
+    }
+}
+
+.svgIcon {
+}

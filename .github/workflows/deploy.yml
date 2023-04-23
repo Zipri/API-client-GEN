@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Setup key
+      - run: set -eu
+      - run: mkdir "$HOME/.ssh"
+      - run: echo "${{ secrets.key }}" > "$HOME/.ssh/key"
+      - run: chmod 600 "$HOME/.ssh/key"
+      # Build app
+      - run: yarn run install-server
+      - run: yarn run install-client
+      - run: yarn run build-client
+      - run: yarn run build-server
+      # Deploy
+      - run: cd dist && rsync -e "ssh -p 1024 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . host1820111@ftp77.hostland.ru:/home/host1820111/kolos-off.ru/htdocs/client-generator
+      - run: ssh -p 1024 -i $HOME/.ssh/key -o StrictHostKeyChecking=no host1820111@ftp77.hostland.ru 'cd /home/host1820111/kolos-off.ru/htdocs/client-generator/server && npm install'
+      - run: ssh -p 1024 -i $HOME/.ssh/key -o StrictHostKeyChecking=no host1820111@ftp77.hostland.ru 'cd /home/host1820111/kolos-off.ru/htdocs/client-generator/server && pm2 delete all || pm2 ls'
+      - run: ssh -p 1024 -i $HOME/.ssh/key -o StrictHostKeyChecking=no host1820111@ftp77.hostland.ru 'cd /home/host1820111/kolos-off.ru/htdocs/client-generator/server && npm run start-prod'

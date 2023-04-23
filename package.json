@@ -1,0 +1,25 @@
+{
+  "name": "openapigen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"yarn run dev-server\"  \"yarn run dev-client\" -c \"bgBlue.bold,bgMagenta.bold\"",
+    "dev-server": "cd ./server && yarn run dev",
+    "restart-server": "cd ./server && yarn restart",
+    "start-server": "cd ./server && yarn build && yarn start",
+    "stop-server": "cd ./server && yarn stop",
+    "dev-client": "cd ./frontend && yarn start",
+    "install-all": "yarn install && concurrently \"yarn run install-server\"  \"yarn run install-client\" -c \"bgBlue.bold,bgMagenta.bold\"",
+    "install-server": "cd ./server && yarn install",
+    "install-client": "cd ./frontend && yarn install",
+    "build-all": "yarn run build-client && yarn run build-server",
+    "build-server": "cd ./server && yarn build",
+    "build-client": "cd ./frontend && yarn build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
+}

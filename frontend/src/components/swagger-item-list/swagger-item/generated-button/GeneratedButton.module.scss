@@ -1,0 +1,51 @@
+.generatedButton {
+  font-size: 14px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid white;
+
+
+  & > * {  
+    padding: 8px 12px;
+    border-radius: 6px;
+  }
+
+  &__version {
+    margin-left: .5rem;
+    font-size: 12px;
+    color: rgb(192, 192, 192);
+    transition: color .3s ease;
+  }
+
+  &__download {
+    cursor: pointer;
+    transition: color .3s ease;
+    & svg {
+      transition: color .3s ease !important;
+    }
+    &:hover, &:hover>* {
+      color: #4096ff !important;
+    }
+  }
+
+
+  &__delete {
+    cursor: pointer;
+    background: #ffffff52;
+    color: #7c0000ed;
+    border: 1px solid transparent;
+    padding: 4px 5px;
+    margin-right: 3px;
+
+    transition: border-color .3s ease, background-color .3s ease;
+
+    &:hover {
+      background: #ffffffbf;
+      border-color: #7c0000ed;
+    }
+  }
+}

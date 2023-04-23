@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@store/*": ["./src/store/*"],
+      "@components/*": ["./src/components/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@uiKit/*": ["./src/ui-kit/*"],
+      "@services/*": ["./src/services/*"],
+      "@tools/*": ["./src/tools/*"],
+      "@config": ["./src/config.ts"],
+      "@types/*": ["./src/types/*"]
+    },
+    "allowJs": true,
+    "target": "ES2020",
+    "lib": ["DOM", "ESNext"],
+    "module": "ES2020",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "declaration": true,
+    "downlevelIteration": true
+  },
+  "include": ["src", "declaration.d.ts"]
+}

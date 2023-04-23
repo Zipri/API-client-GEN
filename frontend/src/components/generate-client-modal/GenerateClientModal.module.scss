@@ -1,0 +1,56 @@
+.generateClientModal {
+  width: 70vw !important;
+  top: 20px !important;
+
+  &__title {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__form {
+    max-height: calc(100vh - 175px);
+    max-width: 600px;
+    min-width: 70%;
+    width: 100%;
+    padding-right: 5px;
+    overflow: hidden;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: white;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: grey;
+      border: 3px solid grey;
+      border-radius: 6px;
+    }
+  }
+
+}
+.marked {
+  background: #c300ff8a;
+  border-radius: 3px;
+  padding: 0 3px;
+  display: inline-flex;
+  align-items: center;
+}
+:global {
+  .ant-tooltip-inner > p {
+      margin-bottom: 0;
+  }
+  .ant-tooltip {
+      max-width: 300px !important;
+  }
+}

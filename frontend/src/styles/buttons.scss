@@ -1,0 +1,36 @@
+@import './colors';
+@import './typography';
+
+.basicBtn {
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    line-height: 16px !important;
+    letter-spacing: 0 !important;
+    text-align: left;
+}
+
+.common-icon-btn{
+    background: transparent!important;
+    color: $neutral-gray-text!important;
+    &:hover{
+        color: $blue-accent!important;
+    }
+}
+.common-btn {
+    @extend .basicBtn;
+    color: $neutral-gray-text;
+    background: $dark-blue-gray !important;
+}
+
+.edit-btn {
+    @extend .basicBtn;
+    color: $blue-accent!important;
+    border: 1px solid $blue-accent !important;
+}
+
+.common-btn-active {
+    @extend .basicBtn;
+    color: $white-accent;
+    background: $blue-accent !important;
+}

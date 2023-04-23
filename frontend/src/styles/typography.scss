@@ -1,0 +1,67 @@
+@import "colors";
+
+.sub-header-12 {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.04em;
+    text-align: left;
+}
+
+.text-12 {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0;
+    text-align: left;
+}
+
+@mixin text($size:12px, $color:$neutral-gray-text){
+  font-size: $size;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0;
+  text-align: left;
+  color: $color;
+}
+
+@mixin huge-text($size:28px, $color:$light-gray-text){
+  font-size: $size;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 34px;
+  letter-spacing: 0;
+  text-align: left;
+  color: $color;
+}
+@mixin menu-item-text($size:11px, $color:$neutral-gray-text){
+  font-size: $size;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: -0.01em;
+  text-align: left;
+  color: $color;
+}
+
+@mixin marked-text($size:16px, $color:$light-gray-text){
+  font-size: $size;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: $color;
+}
+
+.text-14 {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0;
+    text-align: left;
+}
