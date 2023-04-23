@@ -24,8 +24,9 @@ const generateClient: RequestHandler = async (req: TypedRequestBody<{ fileName: 
     next();
   } catch (e: any) {
     console.log(e.message);
-    fs.writeFileSync('log.json', JSON.stringify(e));
-    res.sendStatus(500) && res.send(e) && next(e);
+    const result = e.stderr ? e.stderr.data.toString() : e;
+    fs.writeFileSync('log.json', JSON.stringify(result));
+    res.sendStatus(500) && res.send(result) && next(e);
   }
 }
 
