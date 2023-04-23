@@ -1,0 +1,114 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "6.4.0",
+    "storageDir": "./bin/openapi/",
+    "generators": {
+      "fetch": {
+        "generatorName": "typescript-fetch",
+        "output": "#{cwd}/openapiFetchClients/#{name}",
+        "glob": "./swaggerSrc/*.{json,yaml}",
+        "skipValidateSpec": true,
+
+        "library": "",
+
+        "importMappings": "",
+        
+        "apiNameSuffix": "Client",
+        "modelNamePrefix": "I",
+        "modelNameSuffix": "Type",
+
+        "additionalProperties": {
+          "npmName": "#{name}-tsclient-fetch",
+          "supportsES6": true,
+          "npmVersion": "6.9.0",
+          "ensureUniqueParams": true,
+          "skipValidateSpec": true,
+          "prefixParameterInterfaces": true,
+          "useSingleRequestParameter": true,
+          "allowUnicodeIdentifiers": true,
+          "paramNaming": "camelCase",
+          "modelPropertyNaming": "camelCase",
+          "enumPropertyNaming": "PascalCase",
+          "enumNameSuffix": "Enum",
+          "stringEnums": true,
+          "sortParamsByRequiredFlag": true,
+          "sortModelPropertiesByRequiredFlag": true,
+          "withInterfaces": true
+        }
+      },
+      "axios": {
+        "generatorName": "typescript-axios",
+        "output": "#{cwd}/openapiAxiosClients/#{name}",
+        "glob": "./swaggerSrc/*.{json,yaml}",
+        "skipValidateSpec": true,
+        "apiNameSuffix": "Client",
+
+        "modelNamePrefix": "I",
+        "modelNameSuffix": "Type",
+
+        "library": "",
+
+        "importMappings": "",
+
+        "additionalProperties": {
+          "npmName": "#{name}-tsclient-axios",
+          "supportsES6": true,
+          "npmVersion": "6.9.0",
+          "ensureUniqueParams": true,
+          "skipValidateSpec": true,
+          "allowUnicodeIdentifiers": true,
+          "prefixParameterInterfaces": true,
+          "paramNaming": "camelCase",
+          "modelPropertyNaming": "camelCase",
+          "enumPropertyNaming": "PascalCase",
+          "enumNameSuffix": "Enum",
+          "stringEnums": true,
+          "sortParamsByRequiredFlag": true,
+          "sortModelPropertiesByRequiredFlag": true,
+          "withInterfaces": true,
+          "withSeparateModelsAndApi": true,
+          "modelPackage": "types",
+          "apiPackage": "api"
+        }
+      },
+      "docs-confluence": {
+        "generatorName": "cwiki",
+        "output": "#{cwd}/openapiDocClients/#{Name}Client",
+        "glob": "./swaggerSrc/*.{json,yaml}",
+        "skipValidateSpec": true,
+        "apiNameSuffix": "Client",
+
+        "modelNamePrefix": "I",
+
+        "additionalProperties": {
+          "ensureUniqueParams": false,
+          "skipValidateSpec": true,
+
+          "sortParamsByRequiredFlag": true,
+          "sortModelPropertiesByRequiredFlag": true,
+          "withInterfaces": true
+        }
+      },
+      "graphql": {
+        "generatorName": "graphql-schema",
+        "output": "#{cwd}/openapiDocClients/#{Name}Client",
+        "glob": "./swaggerSrc/*.{json,yaml}",
+        "skipValidateSpec": true,
+        "apiNameSuffix": "Client",
+
+        "modelNamePrefix": "I",
+
+        "additionalProperties": {
+          "ensureUniqueParams": false,
+          "skipValidateSpec": true,
+
+          "sortParamsByRequiredFlag": true,
+          "sortModelPropertiesByRequiredFlag": true,
+          "withInterfaces": true
+        }
+      }
+    }
+  }
+}
