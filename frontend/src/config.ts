@@ -1,4 +1,8 @@
-export const SERVER_URL = window.location.origin.split(':').slice(0, -1).join(':') + ':5000/api';
+export const SERVER_URL = (
+  /:\d+$/.test(window.location.origin) ?
+  window.location.origin.split(':').slice(0, -1).join(':') 
+  : window.location.origin
+) + ':5000/api';
 
 export const API_URL = {
   spec: SERVER_URL + '/spec',
