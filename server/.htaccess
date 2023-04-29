@@ -1,6 +1,0 @@
-PassengerAppRoot /home/host1820111/kolos-off.ru/htdocs/client-generator/server
-PassengerAppType node
-PassengerStartupFile index.js
-PassengerNodejs /home/host1820111/.nvm/versions/node/v16.18.0/bin/node
-PassengerRestartDir /home/host1820111/kolos-off.ru/nodejs_tmp/www
-PassengerFriendlyErrorPages on

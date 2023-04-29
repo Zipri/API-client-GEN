@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=production pm2 start ./dist/index.js",
     "stop": "cross-env NODE_ENV=production pm2 stop ./dist/index.js",
     "restart": "yarn stop && yarn build && yarn start",
-    "build": "tsc && node ./scripts/pre_deploy.js",
+    "build": "tsc",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
     "dev:server": "cross-env NODE_ENV=production nodemon index.js",
     "oa:delete:all": "cd ./scripts && node clearGeneratedClients.js",
