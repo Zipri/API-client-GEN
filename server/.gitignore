@@ -5,6 +5,7 @@
 /openapiFetchClients
 /bin
 /openapitools.json
+/openapi_config_template.json
 /swaggerSrc
 
 # Logs

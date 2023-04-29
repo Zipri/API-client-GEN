@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { GeneratorTypeEnum } from "./types";
 import { SwaggerFileData } from "../spec/types";
 import { GenerateFormValueType } from "@components/generate-client-modal/models";
+import { downloadFileByBlob } from "@tools/blob";
 
 
 export const useGeneratorApi = () => {
@@ -22,7 +23,22 @@ export const useGeneratorApi = () => {
     }
   };
 
+  const generateConfigBySpec = async (fileName: string, configData: GenerateFormValueType): Promise<boolean> => {
+    try {
+      const response = await axios.post(API_URL.generator + '/generate-config', {
+        fileName,
+        configData
+      });
+      const blob = new Blob([JSON.stringify(response.data)], { type: 'application/json'});
+      downloadFileByBlob(blob, fileName, 200, true);
+      return response.status === 200;
+    } catch (error) {
+      return false;
+    }
+  };
+
   return {
     generateBySpec,
+    generateConfigBySpec
   };
 };

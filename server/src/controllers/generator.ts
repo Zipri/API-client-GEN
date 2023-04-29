@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { AXIOS_CLIENTS_DIR, FETCH_CLIENTS_DIR, SWAGGER_SRC_DIR } from '../config';
+import { AXIOS_CLIENTS_DIR, FETCH_CLIENTS_DIR, OPENAPI_TEMPLATE_CONFIG, SWAGGER_SRC_DIR } from '../config';
 import { RequestHandler } from 'express';
 import { execSync } from 'child_process';
 import { createNeedleConfig } from '../helpers/generator';
@@ -10,36 +10,62 @@ const generateClient: RequestHandler = async (req: TypedRequestBody<{ fileName: 
   try {
     const { fileName, configData } = req.body;
     console.log("generate-client");
-    const newConfig = createNeedleConfig(configData, fileName);
+    const newConfig = createNeedleConfig(configData, fileName, true);
     const pathPackage = (configData.type === GeneratorTypeEnum.Axios ? AXIOS_CLIENTS_DIR : FETCH_CLIENTS_DIR) + fileName.split('.json')[0];
-    
-    logger(newConfig, 'generate-client-step-newConfig');
-    logger(pathPackage, 'generate-client-step-pathPackage');
 
     fs.rmSync(pathPackage, {
       recursive: true,
       force: true
     });
 
-    logger('remove old success and start generate', 'generate-client-step');
-
     execSync(`npm run oa:generate:${configData.type}`);
 
-    logger('generate success and start install-build', 'generate-client-step');
+    execSync(`cd ${pathPackage} && npm i`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 });
 
-    execSync(`cd ${pathPackage} && npm i`);
-    
-    logger('build success', 'generate-client-step');
     res.send(newConfig);
     next();
   } catch (e: any) {
-    const result = e.stderr ? e.stderr.data.toString() : e;
+    console.log('generate-client-error');
+    const result = e.stderr ? e.stderr.split('\n') : e;
     logger(result, 'generate-client-error');
-    // fs.writeFileSync('log.json', JSON.stringify(result));
-    res.sendStatus(500) && res.send(result) && next(e);
+
+    res.status(500).send({
+      err: result
+    }) && next();
   }
-}
+};
+
+const generateConfig: RequestHandler = async (req: TypedRequestBody<{ fileName: string, configData: GenerateFormValueType }>, res, next) => {
+  try {
+    const { fileName, configData } = req.body;
+    console.log("generate-config");
+    const newConfig = createNeedleConfig(configData, fileName, false);
+    fs.writeFileSync(OPENAPI_TEMPLATE_CONFIG, JSON.stringify(newConfig));
+
+    res.writeHead(200, {
+      "Content-Type": "application/octet-stream",
+      "Content-Disposition": `attachment; filename=${OPENAPI_TEMPLATE_CONFIG}`
+    });
+    fs.createReadStream(OPENAPI_TEMPLATE_CONFIG, 'binary').pipe(res);
+
+    fs.rmSync(OPENAPI_TEMPLATE_CONFIG, {
+      recursive: true,
+      force: true
+    });
+
+    next();
+  } catch (e: any) {
+    console.log('generate-config-error');
+    const result = e.stderr ? e.stderr.split('\n') : e;
+    logger(result, 'generate-config-error');
+
+    res.status(500).send({
+      err: result
+    }) && next();
+  }
+};
 
 export default {
-  generateClient
+  generateClient,
+  generateConfig
 };

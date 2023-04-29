@@ -1,6 +1,7 @@
 export const PORT = 5000;
 
 export const SWAGGER_SRC_DIR = 'swaggerSrc/';
+export const OPENAPI_TEMPLATE_CONFIG = 'openapi_config_template.json';
 export const FETCH_CLIENTS_DIR = 'openapiFetchClients/';
 export const AXIOS_CLIENTS_DIR = 'openapiAxiosClients/';
 export const mongoLogin = process.env.MONGODB_LOGIN;

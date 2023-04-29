@@ -3,6 +3,7 @@ import { AXIOS_CLIENTS_DIR, FETCH_CLIENTS_DIR, SWAGGER_SRC_DIR } from '../config
 import { UploadedFile } from 'express-fileupload';
 import { RequestHandler } from 'express';
 import { TypedRequestBody } from '../types';
+import { logger } from '../helpers/logger';
 
 const uploadSpec: RequestHandler = async (req, res, next) => {
   try {

@@ -30,7 +30,12 @@ export const converConfigToString = (type: 'axios' | 'fetch', filterProperty: st
   return convertObjToString(config['generator-cli'].generators[type]);
 };
 
-export const createNeedleConfig = (configData: GenerateFormValueType, fileName: string) => {
+export const createNeedleConfig = (
+  configData: GenerateFormValueType,
+  fileName: string,
+  /** true - при генерации клиента, false - при генерации только конфига  */
+  writeEnable?: boolean
+) => {
   const {
     type,
     apiNameSuffix,
@@ -98,7 +103,7 @@ export const createNeedleConfig = (configData: GenerateFormValueType, fileName: 
   if (withInterfaces !== undefined)
     partConfig.additionalProperties.withInterfaces = withInterfaces;
 
-  fs.writeFileSync('openapitools.json', JSON.stringify(newConfig));
+  writeEnable && fs.writeFileSync('openapitools.json', JSON.stringify(newConfig));
   return newConfig;
 };
 

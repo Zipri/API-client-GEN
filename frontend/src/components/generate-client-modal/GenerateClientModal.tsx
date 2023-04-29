@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { GenerateFormValueType, GenerateClientModalProps } from './models';
 import cl from './GenerateClientModal.module.scss';
-import { Form, Input, Modal, Select, Switch } from 'antd';
+import { Button, Form, Input, Modal, Select, Switch } from 'antd';
 import { GeneratorTypeArr, NamingTypeArr } from '@tools/hooks/api/generator/constants';
 import { useApiContext } from '@components/layout';
 import { defaultFormValue } from './constants';
 import { GeneratorTypeEnum } from '@tools/hooks/api/generator/types';
+import { LoadingOutlined } from '@ant-design/icons';
 
 /** TooltipContentGen - TG */
 const TG = ({ name, example } : { name: string, example?: { str: string, marked: boolean }[] }) => {
@@ -29,10 +30,16 @@ const TG = ({ name, example } : { name: string, example?: { str: string, marked:
 };
 
 const GenerateClientModal: FC<GenerateClientModalProps> = ({ fileName }) => {
-  const { generateBySpec, setGenerateFileName, getGeneratedClientList } = useApiContext();
+  const {
+    generateBySpec,
+    setGenerateFileName,
+    getGeneratedClientList,
+    generateConfigBySpec
+  } = useApiContext();
   const [formInstance] = Form.useForm();
 
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [isGeneratingConfig, setIsGeneratingConfig] = useState<boolean>(false);
   const [formValue, setFormValue] = useState<GenerateFormValueType>(defaultFormValue);
 
   const handleChangeForm = (changedValues: Partial<GenerateFormValueType>, values: GenerateFormValueType) => {
@@ -49,6 +56,16 @@ const GenerateClientModal: FC<GenerateClientModalProps> = ({ fileName }) => {
     setIsGenerating(false);
     closeModal();
     getGeneratedClientList && getGeneratedClientList();
+  };
+
+  const handleGenerateConfig = async () => {
+    if (!generateConfigBySpec || !fileName) return;
+    setIsGeneratingConfig(true);
+    await generateConfigBySpec(fileName, {
+      ...formValue,
+      npmName: formValue.npmName + "-tsclient-" + formValue.type
+    });
+    setIsGeneratingConfig(false);
   };
 
   const closeModal = () => {
@@ -70,12 +87,29 @@ const GenerateClientModal: FC<GenerateClientModalProps> = ({ fileName }) => {
     <Modal className={cl.generateClientModal}
       open={fileName !== null}
       destroyOnClose
-      okText="Сгенерировать"
-      onCancel={closeModal}
-      onOk={() => formInstance.submit()}
-      okButtonProps={{
-        loading: isGenerating
-      }}
+      footer={(
+        <>
+          <Button
+            onClick={closeModal}
+            disabled={isGenerating || isGeneratingConfig}
+          >
+            Отмена
+          </Button>
+          <Button
+            onClick={handleGenerateConfig}
+            disabled={isGenerating || isGeneratingConfig}
+          >
+            {isGeneratingConfig && <LoadingOutlined />} Скачать конфигурацию openapi
+          </Button>
+          <Button
+            type="primary"
+            onClick={() => formInstance.submit()}
+            disabled={isGenerating || isGeneratingConfig}
+          >
+            {isGenerating && <LoadingOutlined />} Сгенерировать
+          </Button>
+        </>
+      )}
     > 
       <p className={cl.generateClientModal__title}>Настройки генерации для {fileName}</p>
       <div className={cl.generateClientModal__row}>
@@ -88,7 +122,7 @@ const GenerateClientModal: FC<GenerateClientModalProps> = ({ fileName }) => {
           onFinish={handleGenerate}
           onValuesChange={handleChangeForm}
           lang='ru'
-          disabled={isGenerating}
+          disabled={isGenerating || isGeneratingConfig}
           labelCol={{
             span: 0,
             offset: 0
