@@ -12,21 +12,30 @@ const generateClient: RequestHandler = async (req: TypedRequestBody<{ fileName: 
     console.log("generate-client");
     const newConfig = createNeedleConfig(configData, fileName);
     const pathPackage = (configData.type === GeneratorTypeEnum.Axios ? AXIOS_CLIENTS_DIR : FETCH_CLIENTS_DIR) + fileName.split('.json')[0];
+    
+    logger(newConfig, 'generate-client-step-newConfig');
+    logger(pathPackage, 'generate-client-step-pathPackage');
 
     fs.rmSync(pathPackage, {
       recursive: true,
       force: true
     });
 
+    logger('remove old success and start generate', 'generate-client-step');
+
     execSync(`npm run oa:generate:${configData.type}`);
 
+    logger('generate success and start install-build', 'generate-client-step');
+
     execSync(`cd ${pathPackage} && npm i`);
+    
+    logger('build success', 'generate-client-step');
     res.send(newConfig);
     next();
   } catch (e: any) {
-    logger(e);
     const result = e.stderr ? e.stderr.data.toString() : e;
-    fs.writeFileSync('log.json', JSON.stringify(result));
+    logger(result, 'generate-client-error');
+    // fs.writeFileSync('log.json', JSON.stringify(result));
     res.sendStatus(500) && res.send(result) && next(e);
   }
 }
