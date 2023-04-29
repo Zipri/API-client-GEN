@@ -9,6 +9,7 @@
     "restart": "yarn stop && yarn build && yarn start",
     "build": "tsc && node ./scripts/pre_deploy.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
+    "dev:server": "cross-env NODE_ENV=development nodemon index.js",
     "oa:delete:all": "cd ./scripts && node clearGeneratedClients.js",
     "oa:generate:fetch": "openapi-generator-cli generate --generator-key fetch",
     "oa:generate:axios": "openapi-generator-cli generate --generator-key axios",
