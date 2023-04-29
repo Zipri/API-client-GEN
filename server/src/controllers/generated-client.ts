@@ -73,7 +73,6 @@ const getClientZip: RequestHandler = async (req: TypedRequestBody<{ name: string
       });
     });
 
-
     next();
   } catch(e: any) {
     console.log(e, e.message);

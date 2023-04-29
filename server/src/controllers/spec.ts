@@ -97,9 +97,7 @@ const downloadSpec: RequestHandler = async (req: TypedRequestBody<{ fileName: st
       "Content-Type": "application/octet-stream",
       "Content-Disposition": `attachment; filename=${fileName}`
     });
-    fs.createReadStream(SWAGGER_SRC_DIR + fileName, 'binary').pipe(res)
-
-    res.sendStatus(200);
+    fs.createReadStream(SWAGGER_SRC_DIR + fileName, 'binary').pipe(res);
 
     next();
   } catch(e: any) {

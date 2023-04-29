@@ -1,6 +1,32 @@
 @import "./variables.scss";
 body {
-    background: $night-blue;
-    margin: 0;
+  background: $night-blue;
+  margin: 0;
 }
 
+@mixin customScroll(
+  $scrollbar-track-color: white,
+  $scrollbar-thumb-color: grey,
+  $scrollbar-thumb-border-color: grey,
+  $scrollbar-thumb-border-width: 3px,
+  $scrollbar-thumb-border-radius: 6px,
+  $scrollbar-width: 6px,
+  $scrollbar-height: 6px
+){
+  overflow: hidden;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: $scrollbar-width;
+    height: $scrollbar-height;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $scrollbar-track-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $scrollbar-thumb-color;
+    border: $scrollbar-thumb-border-width solid $scrollbar-thumb-border-color;
+    border-radius: $scrollbar-thumb-border-radius;
+  }
+}

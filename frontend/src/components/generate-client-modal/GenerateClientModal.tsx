@@ -5,8 +5,8 @@ import { Button, Form, Input, Modal, Select, Switch } from 'antd';
 import { GeneratorTypeArr, NamingTypeArr } from '@tools/hooks/api/generator/constants';
 import { useApiContext } from '@components/layout';
 import { defaultFormValue } from './constants';
-import { GeneratorTypeEnum } from '@tools/hooks/api/generator/types';
 import { LoadingOutlined } from '@ant-design/icons';
+import { ErrorModal } from '@components/error-modal';
 
 /** TooltipContentGen - TG */
 const TG = ({ name, example } : { name: string, example?: { str: string, marked: boolean }[] }) => {
@@ -49,13 +49,17 @@ const GenerateClientModal: FC<GenerateClientModalProps> = ({ fileName }) => {
   const handleGenerate = async (values: GenerateFormValueType) => {
     if (!generateBySpec || !fileName) return;
     setIsGenerating(true);
-    await generateBySpec(fileName, {
+    const result = await generateBySpec(fileName, {
       ...values,
       npmName: values.npmName + "-tsclient-" + formValue.type
     });
     setIsGenerating(false);
-    closeModal();
-    getGeneratedClientList && getGeneratedClientList();
+    if (typeof result === 'boolean' && result) {
+      closeModal();
+      getGeneratedClientList && getGeneratedClientList();
+    } else {
+      ErrorModal('Ошибка генерации', result);
+    }
   };
 
   const handleGenerateConfig = async () => {
@@ -86,6 +90,7 @@ const GenerateClientModal: FC<GenerateClientModalProps> = ({ fileName }) => {
   return (
     <Modal className={cl.generateClientModal}
       open={fileName !== null}
+      onCancel={closeModal}
       destroyOnClose
       footer={(
         <>

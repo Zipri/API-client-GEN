@@ -26,7 +26,7 @@ const generateClient: RequestHandler = async (req: TypedRequestBody<{ fileName: 
     next();
   } catch (e: any) {
     console.log('generate-client-error');
-    const result = e.stderr ? e.stderr.split('\n') : e;
+    const result = e.stderr || e.stdout ? [...(e.stderr?.split('\n') || []), ...(e.stdout?.split('\n') || [])] : e;
     logger(result, 'generate-client-error');
 
     res.status(500).send({
@@ -42,17 +42,11 @@ const generateConfig: RequestHandler = async (req: TypedRequestBody<{ fileName: 
     const newConfig = createNeedleConfig(configData, fileName, false);
     fs.writeFileSync(OPENAPI_TEMPLATE_CONFIG, JSON.stringify(newConfig));
 
-    res.writeHead(200, {
-      "Content-Type": "application/octet-stream",
-      "Content-Disposition": `attachment; filename=${OPENAPI_TEMPLATE_CONFIG}`
-    });
-    fs.createReadStream(OPENAPI_TEMPLATE_CONFIG, 'binary').pipe(res);
-
+    res.status(200).send(newConfig);
     fs.rmSync(OPENAPI_TEMPLATE_CONFIG, {
       recursive: true,
       force: true
     });
-
     next();
   } catch (e: any) {
     console.log('generate-config-error');

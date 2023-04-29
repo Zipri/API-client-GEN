@@ -1,0 +1,26 @@
+@import '@styles';
+.errorContent {
+  max-height: 66vh;
+  padding-right: 5px;
+  @include customScroll(
+    $night-blue
+  );
+
+  p {
+    margin-bottom: 5px;
+    color: $light-gray-text;
+    background: $purple-light;
+    padding: 3px 5px;
+    border-radius: 3px;
+    line-height: 16px;
+    word-break: break-all;
+  }
+}
+
+:local(.errorModal) :global(.ant-modal-content) {
+    background: $night-blue;
+}
+:local(.errorModal) :global(.ant-modal-confirm-title) {
+  color: $light-gray-text !important;
+}
+
