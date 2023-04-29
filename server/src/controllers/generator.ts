@@ -4,6 +4,7 @@ import { RequestHandler } from 'express';
 import { execSync } from 'child_process';
 import { createNeedleConfig } from '../helpers/generator';
 import { GenerateFormValueType, GeneratorTypeEnum, TypedRequestBody } from '../types';
+import { logger } from '../helpers/logger';
 
 const generateClient: RequestHandler = async (req: TypedRequestBody<{ fileName: string, configData: GenerateFormValueType }>, res, next) => {
   try {
@@ -23,7 +24,7 @@ const generateClient: RequestHandler = async (req: TypedRequestBody<{ fileName: 
     res.send(newConfig);
     next();
   } catch (e: any) {
-    console.log(e.message);
+    logger(e);
     const result = e.stderr ? e.stderr.data.toString() : e;
     fs.writeFileSync('log.json', JSON.stringify(result));
     res.sendStatus(500) && res.send(result) && next(e);
