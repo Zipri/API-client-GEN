@@ -34,12 +34,12 @@ const GenerateClientModal: FC<GenerateClientModalProps> = ({ fileName }) => {
     generateBySpec,
     setGenerateFileName,
     getGeneratedClientList,
-    generateConfigBySpec
+    generateConfigBySpec,
+    isGeneratingClient: isGenerating,
+    isGeneratingConfig
   } = useApiContext();
   const [formInstance] = Form.useForm();
 
-  const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [isGeneratingConfig, setIsGeneratingConfig] = useState<boolean>(false);
   const [formValue, setFormValue] = useState<GenerateFormValueType>(defaultFormValue);
 
   const handleChangeForm = (changedValues: Partial<GenerateFormValueType>, values: GenerateFormValueType) => {
@@ -48,12 +48,10 @@ const GenerateClientModal: FC<GenerateClientModalProps> = ({ fileName }) => {
 
   const handleGenerate = async (values: GenerateFormValueType) => {
     if (!generateBySpec || !fileName) return;
-    setIsGenerating(true);
     const result = await generateBySpec(fileName, {
       ...values,
       npmName: values.npmName + "-tsclient-" + formValue.type
     });
-    setIsGenerating(false);
     if (typeof result === 'boolean' && result) {
       closeModal();
       getGeneratedClientList && getGeneratedClientList();
@@ -64,12 +62,10 @@ const GenerateClientModal: FC<GenerateClientModalProps> = ({ fileName }) => {
 
   const handleGenerateConfig = async () => {
     if (!generateConfigBySpec || !fileName) return;
-    setIsGeneratingConfig(true);
     await generateConfigBySpec(fileName, {
       ...formValue,
       npmName: formValue.npmName + "-tsclient-" + formValue.type
     });
-    setIsGeneratingConfig(false);
   };
 
   const closeModal = () => {

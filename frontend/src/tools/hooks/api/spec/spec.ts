@@ -64,7 +64,6 @@ export const useSpecApi = () => {
   const validateSpec = async (fileName: string): Promise<ErrorResponseType> => {
     try {
       const response = await axios.post(API_URL.spec + '/validate', { fileName });
-      console.log(response);
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
@@ -72,7 +71,7 @@ export const useSpecApi = () => {
         return error.response.data as ErrorResponseType;
       }
       return {
-        err: ['Unknow error']
+        err: ['Unknow error', error]
       };
     }
   };

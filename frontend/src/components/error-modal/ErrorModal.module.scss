@@ -6,7 +6,7 @@
     $night-blue
   );
 
-  p {
+  &__child {
     margin-bottom: 5px;
     color: $light-gray-text;
     background: $purple-light;

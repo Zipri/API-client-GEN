@@ -10,8 +10,8 @@ const ErrorContent: FC<ErrorContentProps> = ({ data }) => {
     return Object.entries(__data)
       .filter(([key, value]) => !(!Number.isNaN(key) && !value))
       .map(([key, value], i) => (
-        <p key={key + '_' + i}>
-          {!Number.isNaN(+key) ? '' : key + ':  '}
+        <div className={cl.errorContent__child} key={key + '_' + i}>
+          <b>{!Number.isNaN(+key) ? '' : key + ':  '}</b>
           {
             typeof value === 'string' ?
               value 
@@ -19,7 +19,7 @@ const ErrorContent: FC<ErrorContentProps> = ({ data }) => {
                 JSON.stringify(value) 
                 : convert(value || {})
           }
-        </p>
+        </div>
       ));
   }, [data]);
 

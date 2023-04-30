@@ -114,7 +114,7 @@ const validateSpec: RequestHandler = async (req: TypedRequestBody<{ fileName: st
     const specStr: string = fs.readFileSync(SWAGGER_SRC_DIR + fileName, { encoding: 'utf8' });
     const spec = JSON.parse(specStr);
     const validator = new OpenAPISchemaValidator({
-      version: spec?.info?.version || 2,
+      version: spec?.openapi || spec?.swagger,
       // optional
       extensions: {
         /* place any properties here to extend the schema. */

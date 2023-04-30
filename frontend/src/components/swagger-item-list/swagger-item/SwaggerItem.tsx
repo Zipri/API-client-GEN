@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useState } from 'react';
 import { SwaggerItemProps } from './models';
 import cl from './SwaggerItem.module.scss';
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, message } from 'antd';
 import { DeleteOutlined, ExceptionOutlined, LoadingOutlined, RadarChartOutlined } from '@ant-design/icons';
 
 import { useApiContext } from '@components/layout';
@@ -18,6 +18,7 @@ const SwaggerItem: FC<SwaggerItemProps> = ({ data }) => {
   } = useApiContext();
 
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [specValidating, setSpecValidating] = useState<boolean>(false);
 
   const generatedClientList = useMemo(() => {
     if (!clientList || !data.fileName) return [];
@@ -43,8 +44,14 @@ const SwaggerItem: FC<SwaggerItemProps> = ({ data }) => {
 
   const handleValidateSpec = async () => {
     if (!validateSpec || !data.fileName) return;
+    setSpecValidating(true);
     const result = await validateSpec(data.fileName);
-    ErrorModal('Ошибки в спецификации', result);
+    setSpecValidating(false);
+    if (result.err && result.err.length)
+      ErrorModal('Ошибки в спецификации', result);
+    else {
+      message.success('Спецификация корректна');
+    }
   };
 
   return (
@@ -59,7 +66,7 @@ const SwaggerItem: FC<SwaggerItemProps> = ({ data }) => {
             </Tooltip>
             <span className={cl.swaggerItem__version}>Версия: {data.version}</span>
             <Tooltip title="Валидация спецификации">
-              <ExceptionOutlined onClick={handleValidateSpec} />
+              {specValidating ? <LoadingOutlined /> : <ExceptionOutlined onClick={handleValidateSpec} />}
             </Tooltip>
           </p>
         
