@@ -18,9 +18,9 @@ const generateClient: RequestHandler = async (req: TypedRequestBody<{ fileName: 
       force: true
     });
 
-    execSync(`npm run oa:generate:${configData.type}`);
+    execSync(`npm run oa:generate:${configData.type}`, { encoding: 'utf8', maxBuffer: 100 * 1024 * 1024 });
 
-    execSync(`cd ${pathPackage} && npm i`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 });
+    execSync(`cd ${pathPackage} && npm i`, { encoding: 'utf8', maxBuffer: 100 * 1024 * 1024 });
 
     res.send(newConfig);
     next();
@@ -50,11 +50,10 @@ const generateConfig: RequestHandler = async (req: TypedRequestBody<{ fileName: 
     next();
   } catch (e: any) {
     console.log('generate-config-error');
-    const result = e.stderr ? e.stderr.split('\n') : e;
-    logger(result, 'generate-config-error');
+    logger(e, 'generate-config-error');
 
     res.status(500).send({
-      err: result
+      err: e
     }) && next();
   }
 };

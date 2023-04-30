@@ -4,6 +4,7 @@ import { UploadedFile } from 'express-fileupload';
 import { RequestHandler } from 'express';
 import { TypedRequestBody } from '../types';
 import { logger } from '../helpers/logger';
+import OpenAPISchemaValidator from 'openapi-schema-validator';
 
 const uploadSpec: RequestHandler = async (req, res, next) => {
   try {
@@ -105,10 +106,35 @@ const downloadSpec: RequestHandler = async (req: TypedRequestBody<{ fileName: st
     res.sendStatus(500) && next(e);
   }
 };
+const validateSpec: RequestHandler = async (req: TypedRequestBody<{ fileName: string }>, res, next) => {
+  try {
+    const { fileName } = req.body;
+    console.log('validate-spec');
+
+    const specStr: string = fs.readFileSync(SWAGGER_SRC_DIR + fileName, { encoding: 'utf8' });
+    const spec = JSON.parse(specStr);
+    const validator = new OpenAPISchemaValidator({
+      version: spec?.info?.version || 2,
+      // optional
+      extensions: {
+        /* place any properties here to extend the schema. */
+      }
+    });
+    const data = validator.validate(spec);
+    res.status(200).send({
+      err: data.errors
+    });
+    next();
+  } catch(e: any) {
+    console.log(e.message);
+    res.sendStatus(500) && next(e);
+  }
+};
 
 export default {
   uploadSpec,
   getSpecList,
   deleteSpec,
-  downloadSpec
+  downloadSpec,
+  validateSpec
 };

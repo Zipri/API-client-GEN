@@ -1,3 +1,4 @@
+@import '@styles';
 .swaggerItemListWrap {
   width: 100%;
   padding-top: 3rem;
@@ -6,10 +7,11 @@
   & .swaggerItemList {
     height: calc(100vh - 3rem);
     max-height: 100vh;
-    overflow: hidden;
-    overflow-y: auto;
     padding: 1rem;
 
+    @include customScroll(
+      $night-blue
+    );
     &.loading {
       filter: blur(2px);
     }

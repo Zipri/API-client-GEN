@@ -2,16 +2,18 @@ import React, { FC, useMemo, useState } from 'react';
 import { SwaggerItemProps } from './models';
 import cl from './SwaggerItem.module.scss';
 import { Button, Tooltip } from 'antd';
-import { DeleteOutlined, LoadingOutlined, RadarChartOutlined, UploadOutlined } from '@ant-design/icons';
+import { DeleteOutlined, ExceptionOutlined, LoadingOutlined, RadarChartOutlined } from '@ant-design/icons';
 
 import { useApiContext } from '@components/layout';
 import { GeneratedButton } from './generated-button';
+import { ErrorModal } from '@components/error-modal';
 
 const SwaggerItem: FC<SwaggerItemProps> = ({ data }) => {
   const {
     deleteSpec,
     setGenerateFileName,
     downloadSpec,
+    validateSpec,
     clientList
   } = useApiContext();
 
@@ -39,17 +41,27 @@ const SwaggerItem: FC<SwaggerItemProps> = ({ data }) => {
     await downloadSpec(data.fileName);
   };
 
+  const handleValidateSpec = async () => {
+    if (!validateSpec || !data.fileName) return;
+    const result = await validateSpec(data.fileName);
+    ErrorModal('Ошибки в спецификации', result);
+  };
+
   return (
     <div className={cl.swaggerItem}>
       <div className={cl.swaggerItem__row}>
-        <Tooltip title={(
-          <span onClick={handleDownloadSpec} className={cl.swaggerItem__downloadSpec}>{data.fileName}</span>
-        )}>
+        
           <p className={cl.swaggerItem__fileName}>
-            {data.title || data.fileName}
+            <Tooltip title={(
+              <span onClick={handleDownloadSpec} className={cl.swaggerItem__downloadSpec}>{data.fileName}</span>
+            )}>
+              {data.title || data.fileName}
+            </Tooltip>
             <span className={cl.swaggerItem__version}>Версия: {data.version}</span>
+            <Tooltip title="Валидация спецификации">
+              <ExceptionOutlined onClick={handleValidateSpec} />
+            </Tooltip>
           </p>
-        </Tooltip>
         
         <Button icon={isDeleting ? <LoadingOutlined /> : <DeleteOutlined />} onClick={handleDelete}>
           Удалить

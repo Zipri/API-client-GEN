@@ -1,21 +1,32 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback } from 'react';
 import { ErrorContentProps } from './models';
 import cl from './ErrorModal.module.scss';
 import { Modal } from 'antd';
 
 const ErrorContent: FC<ErrorContentProps> = ({ data }) => {
-  const filtered = useMemo(() => {
-    if (!data) return [];
-    return Object.entries(data.err).filter(([key, value]) => !(!Number.isNaN(key) && !value));
+
+  const convert = useCallback((__data: Record<string, string | Record<string, any>>): any => {
+    if (!__data) return <></>;
+    return Object.entries(__data)
+      .filter(([key, value]) => !(!Number.isNaN(key) && !value))
+      .map(([key, value], i) => (
+        <p key={key + '_' + i}>
+          {!Number.isNaN(+key) ? '' : key + ':  '}
+          {
+            typeof value === 'string' ?
+              value 
+              : typeof value !== 'object' ?
+                JSON.stringify(value) 
+                : convert(value || {})
+          }
+        </p>
+      ));
   }, [data]);
+
   if (!data) return <></>;
   return (
     <div className={cl.errorContent}>
-      {
-        filtered.map(([key, value]) => (
-          <p>{!Number.isNaN(key) ? '' : key + ':'} {typeof value === 'string' ? value : JSON.stringify(value)}</p>
-        ))
-      }
+      {convert(data.err)}
     </div>
   );
 };

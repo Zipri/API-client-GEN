@@ -34,6 +34,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "nodemon": "^2.0.19",
+    "openapi-schema-validator": "^12.1.0",
     "pm2": "^5.2.2",
     "ws": "^8.8.1",
     "zip-a-folder": "^1.1.5"

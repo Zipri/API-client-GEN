@@ -1,10 +1,11 @@
 import { API_URL, SERVER_URL } from "@config";
 import { RcFile } from "antd/es/upload";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { SpecListResponseType, SwaggerFileData } from "./types";
 import { convertSpecList } from "./helpers";
 import { binaryToBlob, downloadFileByBlob } from "@tools/blob";
+import { ErrorResponseType } from "../types";
 
 export const useSpecApi = () => {
   const [specList, setSpecList] = useState<SwaggerFileData[]>([]);
@@ -60,6 +61,22 @@ export const useSpecApi = () => {
     }
   };
 
+  const validateSpec = async (fileName: string): Promise<ErrorResponseType> => {
+    try {
+      const response = await axios.post(API_URL.spec + '/validate', { fileName });
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        console.log(error.response);
+        return error.response.data as ErrorResponseType;
+      }
+      return {
+        err: ['Unknow error']
+      };
+    }
+  };
+
   useEffect(() => {
     getSpecList();
   }, []);
@@ -69,6 +86,7 @@ export const useSpecApi = () => {
     getSpecList,
     deleteSpec,
     downloadSpec,
+    validateSpec,
     specList,
     specListLoading
   };
