@@ -3,6 +3,9 @@
 /node_modules
 /openapiAxiosClients
 /openapiFetchClients
+/nswagClients
+/nswag/APIClientGenerator/bin
+/nswag/APIClientGenerator/obj
 /bin
 /openapitools.json
 /openapi_config_template.json

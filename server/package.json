@@ -15,6 +15,7 @@
     "oa:generate:axios": "openapi-generator-cli generate --generator-key axios",
     "oa:generate:docs-confluence": "openapi-generator-cli generate --generator-key docs-confluence",
     "oa:generate:graphql": "openapi-generator-cli generate --generator-key graphql",
+    "nswag:generate": "dotnet run --project nswag/APIClientGenerator swaggerSrc/pfcloud.json nswagClients/pfcloud/lib/clients.ts TypeScript",
     "start-prod": "pm2 start -f index.js",
     "clear-prod": "pm2 stop all && pm2 delete all"
   },
