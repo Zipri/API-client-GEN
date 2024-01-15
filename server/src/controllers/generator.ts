@@ -15,10 +15,7 @@ import {
 } from '../types';
 import { logger } from '../helpers/logger';
 
-/**
- * Обработчик запросов для генерации клиентской библиотеки
- * Генерация клиентских библиотек на основе заданных параметров
- */
+/** Генерация клиентских библиотек на основе заданных параметров */
 const generateClient: RequestHandler = async (
     req: TypedRequestBody<{
         fileName: string;
